@@ -9,10 +9,12 @@ namespace MyApp.Infrastructure.Repositories
     public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEntity
     {
         protected readonly MyAppDbContext _dbContext;
+        private readonly ISpecificationEvaluator<T> _specEvaluator;
 
-        public BaseRepositoryAsync(MyAppDbContext dbContext)
+        public BaseRepositoryAsync(MyAppDbContext dbContext, ISpecificationEvaluator<T> specEvaluator)
         {
             _dbContext = dbContext;
+            _specEvaluator = specEvaluator;
         }
 
         public virtual async Task<T?> GetByIdAsync(Guid id)
@@ -58,7 +60,7 @@ namespace MyApp.Infrastructure.Repositories
 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
-            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+            return _specEvaluator.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
     }
 }

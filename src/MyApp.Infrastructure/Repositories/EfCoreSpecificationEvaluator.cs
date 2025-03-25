@@ -4,7 +4,7 @@ using MyApp.Domain.Core.Models;
 
 namespace MyApp.Infrastructure.Repositories
 {
-    public class SpecificationEvaluator<T> where T : BaseEntity
+    public class EfCoreSpecificationEvaluator<T> : ISpecificationEvaluator<T> where T : BaseEntity
     {
         public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> specification)
         {

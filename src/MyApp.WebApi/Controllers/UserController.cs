@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces;
 using MyApp.Application.Models.Requests;
-using MyApp.Application.Models.Responses;
+using MyApp.WebApi.Models.Requests;
+using MyApp.WebApi.Models.Responses;
+using MyApp.Domain.Enums;
 
 namespace MyApp.WebApi.Controllers
 {
@@ -17,10 +19,31 @@ namespace MyApp.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateUserRes>> CreateUser(CreateUserReq user)
+        public async Task<ActionResult<CreateUserResponse>> CreateUser(CreateUserRequest request)
         {
-            var result = await _userService.CreateUser(user);
-            return Ok(result);
+            var appRequest = new CreateUserReq
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                EmailId = request.EmailId,
+                Password = request.Password,
+                Status = (UserStatus)request.Status
+            };
+
+            var result = await _userService.CreateUser(appRequest);
+            var userDto = result.Data;
+
+            var response = new CreateUserResponse
+            {
+                Id = userDto.Id,
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                EmailId = userDto.EmailId,
+                Status = userDto.Status,
+                StatusText = userDto.StatusText
+            };
+
+            return Ok(response);
         }
 
         [HttpPost]

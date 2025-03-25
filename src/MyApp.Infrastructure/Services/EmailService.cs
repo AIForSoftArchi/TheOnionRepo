@@ -85,9 +85,11 @@ namespace MyApp.Infrastructure.Services
                         // Attachments
                         if (email.Attachments != null && email.Attachments.Count > 0)
                         {
-                            foreach (var attchment in email.Attachments)
+                            foreach (var attachment in email.Attachments)
                             {
-                                mailMessage.Attachments.Add(attchment.File);
+                                var stream = new MemoryStream(attachment.Data);
+                                var mailAttachment = new Attachment(stream, attachment.Filename, attachment.MediaType);
+                                mailMessage.Attachments.Add(mailAttachment);
                             }
                         }
 

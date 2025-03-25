@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Entities;
+using MyApp.Infrastructure.Data.Configurations;
 
 namespace MyApp.Infrastructure.Data
 {
@@ -9,5 +10,12 @@ namespace MyApp.Infrastructure.Data
         { }
 
         public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

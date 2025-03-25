@@ -18,5 +18,20 @@ namespace MyApp.Domain.Entities
         public Guid? LastModifiedBy { get; set; }
         public DateTimeOffset? LastModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
+
+        public static User Create(string firstName, string lastName, string emailId, string password, UserStatus status)
+        {
+            return new User
+            {
+                Id = Guid.NewGuid(),
+                FirstName = firstName,
+                LastName = lastName,
+                EmailId = emailId,
+                Password = password,
+                Status = status,
+                CreatedOn = DateTimeOffset.UtcNow,
+                IsDeleted = false
+            };
+        }
     }
 }

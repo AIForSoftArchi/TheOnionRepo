@@ -17,6 +17,7 @@ namespace MyApp.Infrastructure
                 x => x.MigrationsAssembly("MyApp.Infrastructure")));
 
             services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
+            services.AddScoped(typeof(ISpecificationEvaluator<>), typeof(EfCoreSpecificationEvaluator<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IEmailService, EmailService>();
@@ -25,12 +26,9 @@ namespace MyApp.Infrastructure
 
         public static void MigrateDatabase(this IServiceProvider serviceProvider)
         {
-            var dbContextOptions = serviceProvider.GetRequiredService<DbContextOptions<MyAppDbContext>>();
-
-            using (var dbContext = new MyAppDbContext(dbContextOptions))
-            {
-                dbContext.Database.Migrate();
-            }
+            using var scope = serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<MyAppDbContext>();
+            dbContext.Database.Migrate();
         }
     }
 }

@@ -7,6 +7,7 @@ using MyApp.Domain.Exceptions;
 using MyApp.Application.Models.DTOs;
 using MyApp.Application.Interfaces;
 using MyApp.Application.Core.Services;
+using MyApp.Application.Mappers;
 using MyApp.Domain.Core.Repositories;
 
 namespace MyApp.Application.Services
@@ -24,20 +25,15 @@ namespace MyApp.Application.Services
 
         public async Task<CreateUserRes> CreateUser(CreateUserReq req)
         {
-            var user = await _unitOfWork.Repository<User>().AddAsync(new User
-            {
-                FirstName = req.FirstName,
-                LastName = req.LastName,
-                EmailId = req.EmailId,
-                Password = req.Password,
-                Status = req.Status
-            });
+            var user = await _unitOfWork.Repository<User>().AddAsync(
+                User.Create(req.FirstName, req.LastName, req.EmailId, req.Password, req.Status)
+            );
 
             await _unitOfWork.SaveChangesAsync();
 
             _loggerService.LogInfo("New user created");
 
-            return new CreateUserRes() { Data = new UserDTO(user) };
+            return new CreateUserRes() { Data = UserMapper.ToDTO(user) };
         }
 
         public async Task<ValidateUserRes> ValidateUser(ValidateUserReq req)
@@ -76,7 +72,7 @@ namespace MyApp.Application.Services
 
             return new GetAllActiveUsersRes()
             {
-                Data = users.Select(x => new UserDTO(x)).ToList()
+                Data = users.Select(UserMapper.ToDTO).ToList()
             };
         }
     }
