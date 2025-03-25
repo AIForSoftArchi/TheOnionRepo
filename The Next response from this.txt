@@ -1,0 +1,28 @@
+1. `MyApp.WebApi.Controllers.UserController` directly references `MyApp.Domain.Enums.UserStatus`, violating domain isolation. The WebApi layer should not have direct dependencies on the Domain layer.
+
+
+2. `MyApp.Application.Models.Requests.CreateUserReq` references `MyApp.Domain.Enums.UserStatus`, violating the dependency rule. Application layer DTOs should not directly use Domain layer enums.
+
+
+3. `MyApp.Infrastructure.Repositories.BaseRepositoryAsync` directly depends on `MyApp.Infrastructure.Data.MyAppDbContext`, violating the dependency inversion principle. It should depend on an abstraction defined in the Domain layer.
+
+
+4. `MyApp.Infrastructure.Repositories.UnitOfWork` has a direct dependency on `MyApp.Infrastructure.Data.MyAppDbContext`, violating the dependency inversion principle. It should depend on an abstraction.
+
+
+5. `MyApp.Application.Services.UserService` directly instantiates Domain entities (User.Create), violating separation of concerns. Domain entity creation should be handled within the Domain layer.
+
+
+6. `CreateUserResponse.cs` is misplaced in WebApi/Models/Requests folder when it's actually a response model. It should be in WebApi/Models/Responses.
+
+
+7. `MyApp.Infrastructure.ServiceExtensions` directly references concrete implementations (EmailService, LoggerService) instead of depending on abstractions, violating dependency inversion principle.
+
+
+8. `MyApp.WebApi.Program.cs` has direct dependencies on both Application and Infrastructure layers, violating the dependency rule. It should only depend on abstractions.
+
+
+9. `MyApp.Application.Mappers.UserMapper` directly references Domain entities, violating layer isolation. It should work with abstractions or DTOs defined in the Application layer.
+
+
+10. `MyApp.Infrastructure.Data.Configurations.UserConfiguration` directly references Domain entities and enforces database-specific rules on domain entities, violating domain isolation.
