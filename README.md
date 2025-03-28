@@ -8,3 +8,7 @@ This repository has then been through our system, and then changed with it's ind
 ## BE AWARE
 
 The Docs folder has also been removed.
+
+
+## The new architectual violations our prototype found
+The new architectual violations our prototype found, can be found in the txt file named "The Next response from this.txt"
