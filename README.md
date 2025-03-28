@@ -1,13 +1,13 @@
-# The perfect Onion Architecture / Clean Architecture
+# The Test Onion Architecture / Clean Architecture
 
-This is our version of a Repo, that our system finds no errors in.
+This is our version of a repository, that our prototype can try to find errors in, and see if our prototype finds the repository perfect, after these violations have been fixed.
 This is based on the repo created by <a href="https://github.com/NilavPatel">NilavPatel</a>, which can be found <a href="https://github.com/NilavPatel/dotnet-onion-architecture">here</a>
 
 This repository has then been through our system, and then changed with it's individual changes
 
 ## BE AWARE
 
-The Docs folder has also been removed.
+The Docs folder has also been removed, from the original repository.
 
 ## The original violations, according to out prototype
 
